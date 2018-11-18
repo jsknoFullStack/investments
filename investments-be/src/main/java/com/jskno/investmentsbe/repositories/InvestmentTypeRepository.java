@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InvestmentTypeRepository extends CrudRepository<InvestmentType, Long> {
+
+    public InvestmentType findInvestmentTypeByDescription(String description);
 }

@@ -4,6 +4,9 @@ import com.jskno.investmentsbe.domain.base.AbstractEntity;
 import org.hibernate.annotations.JoinColumnOrFormula;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Positive;
 import java.util.Date;
 
 @Entity
@@ -15,17 +18,23 @@ public class InvestmentTransaction extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "investement_type_id")
+    @NotNull(message = "The investment type is required")
     private InvestmentType investmentType;
 
     @ManyToOne
     @JoinColumn(name = "transaction_type_id")
+    @NotNull(message = "The transaction type is required")
     private TransactionType transactionType;
 
+    @Positive(message = "The price must be positive")
     private Double price;
 
+    @Positive(message = "The investment units must be positive")
     private Double shares;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNull(message = "The transaction date is required")
+    @PastOrPresent(message = "None transaction can take place in the future")
     private Date transactionDate;
 
     public InvestmentTransaction() {
@@ -47,6 +56,14 @@ public class InvestmentTransaction extends AbstractEntity {
         this.investmentType = investmentType;
     }
 
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+    }
+
     public Double getPrice() {
         return price;
     }
@@ -61,5 +78,13 @@ public class InvestmentTransaction extends AbstractEntity {
 
     public void setShares(Double shares) {
         this.shares = shares;
+    }
+
+    public Date getTransactionDate() {
+        return transactionDate;
+    }
+
+    public void setTransactionDate(Date transactionDate) {
+        this.transactionDate = transactionDate;
     }
 }

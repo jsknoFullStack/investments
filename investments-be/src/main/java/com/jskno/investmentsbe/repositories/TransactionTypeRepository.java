@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TransactionTypeRepository extends CrudRepository<TransactionType, Long> {
+
+    public TransactionType findTransactionTypeByDescription(String description);
 }
