@@ -40,7 +40,7 @@ public class InvestmentTransactionController {
         investmentTransactionService.deleteTransactionById(id);
     }
 
-    @GetMapping("")
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public Iterable<InvestmentTransaction> getAllInvestmentTransactions() {
         return investmentTransactionService.getAllInvestmentTransaction();
