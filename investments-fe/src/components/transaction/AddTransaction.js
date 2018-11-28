@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { createTransaction } from "../../actions/transactionActions";
+import { getInvestmentTypes } from "../../actions/investmentTypeActions";
 import classnames from "classnames";
 
 class AddTransaction extends Component {
@@ -13,6 +14,7 @@ class AddTransaction extends Component {
       price: "",
       shares: "",
       transactionDate: "",
+      investmentTypes: [],
       errors: {}
     };
 
@@ -20,10 +22,16 @@ class AddTransaction extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this.props.getInvestmentTypes();
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
+    const { investmentTypes } = nextProps;
+    this.setState({ investmentTypes: investmentTypes });
   }
 
   onChange(e) {
@@ -44,6 +52,15 @@ class AddTransaction extends Component {
 
   render() {
     const { errors } = this.state;
+    let options = [];
+    const { investmentTypes } = this.state;
+    if (investmentTypes.length > 0) {
+      options = investmentTypes.map(investmentType => (
+        <option key={investmentType.id} value={investmentType.id}>
+          {investmentType.description}
+        </option>
+      ));
+    }
     return (
       <div>
         <div className="transaction">
@@ -54,8 +71,7 @@ class AddTransaction extends Component {
                 <hr />
                 <form onSubmit={this.onSubmit}>
                   <div className="form-group">
-                    <input
-                      type="text"
+                    <select
                       className={classnames("form-control form-control-lg ", {
                         "is-invalid": errors.investmentType
                       })}
@@ -63,7 +79,9 @@ class AddTransaction extends Component {
                       name="investmentType"
                       value={this.state.investmentType}
                       onChange={this.onChange}
-                    />
+                    >
+                      {options}
+                    </select>
                     {errors.investmentType && (
                       <div className="invalid-feedback">
                         {errors.investmentType}
@@ -151,14 +169,16 @@ class AddTransaction extends Component {
 
 AddTransaction.propTypes = {
   createTransaction: PropTypes.func.isRequired,
+  getInvestmentTypes: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
+  investmentTypes: state.appInvestmentType.investmentTypes,
   errors: state.errors
 });
 
 export default connect(
   mapStateToProps,
-  { createTransaction }
+  { createTransaction, getInvestmentTypes }
 )(AddTransaction);

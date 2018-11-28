@@ -5,6 +5,7 @@ import {
   createTransaction,
   getTransaction
 } from "../../actions/transactionActions";
+import { getInvestmentTypes } from "../../actions/investmentTypeActions";
 import classnames from "classnames";
 
 class UpdateTransaction extends Component {
@@ -181,16 +182,18 @@ class UpdateTransaction extends Component {
 UpdateTransaction.propTypes = {
   getTransaction: PropTypes.func.isRequired,
   transaction: PropTypes.object.isRequired,
+  getInvestmentTypes: PropTypes.func.isRequired,
   createTransaction: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   transaction: state.appTransaction.transaction,
+  getInvestmentTypes: PropTypes.func.isRequired,
   errors: state.errors
 });
 
 export default connect(
   mapStateToProps,
-  { getTransaction, createTransaction }
+  { getTransaction, getInvestmentTypes, createTransaction }
 )(UpdateTransaction);
