@@ -56,7 +56,7 @@ class AddTransaction extends Component {
     const { investmentTypes } = this.state;
     if (investmentTypes.length > 0) {
       options = investmentTypes.map(investmentType => (
-        <option key={investmentType.id} value={investmentType.id}>
+        <option key={investmentType.id} value={investmentType}>
           {investmentType.description}
         </option>
       ));
